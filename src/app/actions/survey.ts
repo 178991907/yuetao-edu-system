@@ -107,8 +107,8 @@ export async function deleteSurvey(id: string) {
   }
 }
 
-const firstNames = ['罗', '马', '郭', '何', '林', '高', '朱', '胡', '孙', '徐', '吴', '周', '黄', '赵', '杨', '陈', '刘', '张', '李', '王'];
-const lastNames = ['诗涵', '宇博', '梦瑶', '俊豪', '若冰', '思源', '雅琪', '子轩', '可欣', '沐辰', '嘉懿', '雨霏', '晨曦', '欣怡', '浩宇', '语馨', '梓睿', '一诺', '子悦', '涵'];
+const firstNames = ['罗', '马', '郭', '何', '林', '高', '朱', '胡', '孙', '徐', '吴', '周', '黄', '赵', '杨', '陈', '刘', '张', '李', '王', '沈', '韩', '杨', '唐', '董'];
+const lastNames = ['诗涵', '宇博', '梦瑶', '俊豪', '若冰', '思源', '雅琪', '子轩', '可欣', '沐辰', '嘉懿', '雨霏', '晨曦', '欣怡', '浩宇', '语馨', '梓睿', '一诺', '子悦', '涵', '星辰', '书宇', '芷晴', '亦凡', '佳琪'];
 
 const MOCK_SURVEYS = [
   { id: 'sur-1', surveyType: 'PARENT', childNameCn: '罗诗涵', parentName: '陈女士', relationship: '妈妈', phone: '138****5678', createdAt: new Date('2025-03-01') },
@@ -122,7 +122,7 @@ for(let i=2; i<20; i++) {
     parentName: i % 2 === 0 ? '测试家长A' : '测试家长B',
     relationship: i % 3 === 0 ? '妈妈' : '爸爸',
     phone: `150****${String(i).padStart(4, '0')}`,
-    createdAt: new Date(`2025-03-${String((i % 28) + 1).padStart(2, '0')}`)
+    createdAt: i < 20 ? new Date(`2025-03-${String((i % 28) + 1).padStart(2, '0')}`) : new Date('2026-04-05')
   });
 }
 

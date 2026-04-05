@@ -29,10 +29,10 @@ async function main() {
     { name: '少儿硬笔艺术', type: '艺术类', price: 1200, sessions: 16 }
   ];
 
-  const firstNames = ['罗', '马', '郭', '何', '林', '高', '朱', '胡', '孙', '徐', '吴', '周', '黄', '赵', '杨', '陈', '刘', '张', '李', '王'];
-  const lastNames = ['诗涵', '宇博', '梦瑶', '俊豪', '若冰', '思源', '雅琪', '子轩', '可欣', '沐辰', '嘉懿', '雨霏', '晨曦', '欣怡', '浩宇', '语馨', '梓睿', '一诺', '子悦', '涵'];
+  const firstNames = ['罗', '马', '郭', '何', '林', '高', '朱', '胡', '孙', '徐', '吴', '周', '黄', '赵', '杨', '陈', '刘', '张', '李', '王', '沈', '韩', '杨', '唐', '董'];
+  const lastNames = ['诗涵', '宇博', '梦瑶', '俊豪', '若冰', '思源', '雅琪', '子轩', '可欣', '沐辰', '嘉懿', '雨霏', '晨曦', '欣怡', '浩宇', '语馨', '梓睿', '一诺', '子悦', '涵', '星辰', '书宇', '芷晴', '亦凡', '佳琪'];
 
-  for (let i = 0; i < 20; i++) {
+  for (let i = 0; i < 25; i++) {
     // 严格对齐 student.ts 的影子数据
     const name = `${firstNames[i]}${lastNames[i]}`;
     const studentId = i < 2 ? `cmnl-stu-00${i+1}` : `cmnl-stu-auto-${i-2}`;
@@ -56,7 +56,7 @@ async function main() {
         parentRelation: '妈妈',
         status: status,
         remarks: i === 0 ? '该学员对色彩极其敏感，构图大胆非常有层次感。目前已完成 L1 阶段创意美术测评。' : (i === 1 ? '近期在硬笔书写力量控制上有明显提升。' : '该学员由系统影子同步，确保云端档案 100% 详实。'),
-        enrollmentDate: i === 0 ? new Date('2025-03-01') : (i === 1 ? new Date('2025-03-02') : new Date('2025-03-03'))
+        enrollmentDate: i >= 20 ? new Date('2026-04-05') : (i === 0 ? new Date('2025-03-01') : (i === 1 ? new Date('2025-03-02') : new Date('2025-03-03')))
       },
     });
 
@@ -85,7 +85,7 @@ async function main() {
         amount: cp.price, 
         method: '微信', 
         remark: '系统初始化同步',
-        date: new Date(2025, 2, 1)
+        date: i >= 20 ? new Date(2026, 3, 5) : new Date(2025, 2, 1)
       }
     });
 
@@ -93,14 +93,14 @@ async function main() {
     await prisma.communicationLog.create({
       data: {
         studentId: student.id,
-        date: new Date(),
+        date: i >= 20 ? new Date(2026, 3, 5) : new Date(2025, 2, 1),
         teacherFeedback: '孩子表现很有灵气，沟通通顺。',
         parentRequest: '希望能加强发音。',
-        followUpPlan: '待发送反馈卡'
+        followUpPlan: i >= 20 ? '待跟进：新学员四月摸底追踪' : '待发送反馈卡'
       }
     });
 
-    console.log(`✅ [${i + 1}/20] 同步进度: ${name} (${studentId}) 闭环建立完毕。`);
+    console.log(`✅ [${i + 1}/25] 同步进度: ${name} (${studentId}) 闭环建立完毕。`);
   }
 
   console.log('\n🚀 全系统镜像同步已 100% 完成！');

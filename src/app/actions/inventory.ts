@@ -14,10 +14,10 @@ const MOCK_TRANSACTIONS = [
   { id: 'it2', studentId: 'cmnl-stu-002', studentName: '马宇博', itemName: '书法硬笔专属练字贴', quantity: 1, type: 'OUT', date: new Date(), remark: '学员领用' }
 ];
 
-const firstNames = ['罗', '马', '郭', '何', '林', '高', '朱', '胡', '孙', '徐', '吴', '周', '黄', '赵', '杨', '陈', '刘', '张', '李', '王'];
-const lastNames = ['诗涵', '宇博', '梦瑶', '俊豪', '若冰', '思源', '雅琪', '子轩', '可欣', '沐辰', '嘉懿', '雨霏', '晨曦', '欣怡', '浩宇', '语馨', '梓睿', '一诺', '子悦', '涵'];
+const firstNames = ['罗', '马', '郭', '何', '林', '高', '朱', '胡', '孙', '徐', '吴', '周', '黄', '赵', '杨', '陈', '刘', '张', '李', '王', '沈', '韩', '杨', '唐', '董'];
+const lastNames = ['诗涵', '宇博', '梦瑶', '俊豪', '若冰', '思源', '雅琪', '子轩', '可欣', '沐辰', '嘉懿', '雨霏', '晨曦', '欣怡', '浩宇', '语馨', '梓睿', '一诺', '子悦', '涵', '星辰', '书宇', '芷晴', '亦凡', '佳琪'];
 
-for (let i = 2; i < 20; i++) {
+for (let i = 2; i < 25; i++) {
   MOCK_TRANSACTIONS.push({
     id: `it${i+1}`,
     studentId: `cmnl-stu-auto-${i-2}`,
@@ -25,7 +25,7 @@ for (let i = 2; i < 20; i++) {
     itemName: i % 2 === 0 ? '儿童节定制绘本包' : '创意启蒙画教具套装',
     quantity: 1,
     type: 'OUT',
-    date: new Date(`2025-03-${String((i % 28) + 1).padStart(2, '0')}`),
+    date: i < 20 ? new Date(`2025-03-${String((i % 28) + 1).padStart(2, '0')}`) : new Date('2026-04-05'),
     remark: '学员领用'
   });
 }
