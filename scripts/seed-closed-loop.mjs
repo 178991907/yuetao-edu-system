@@ -23,20 +23,19 @@ async function main() {
   // 1. 初始化全套模板
   const t1 = await prisma.surveyTemplate.create({ data: { name: '学员入学访谈表', slug: 'entry-interview', isActive: true } });
 
-  const coursePool = [
   // 提前准备商品库
   const item1 = await prisma.inventoryItem.create({
       data: {
-          name: '创意启蒙画教具套装', category: '耗材库', units: '份', quantity: 100, price: 45.0, description: 'L1-L2 创意启蒙课'
+          name: '创意启蒙画教具套装', category: '耗材库', unit: '份', quantity: 100, price: 45.0, description: 'L1-L2 创意启蒙课'
       }
   });
   const item2 = await prisma.inventoryItem.create({
       data: {
-          name: '儿童节定制绘本包', category: '教学库', units: '套', quantity: 50, price: 68.0, description: '分级读物'
+          name: '儿童节定制绘本包', category: '教学库', unit: '套', quantity: 50, price: 68.0, description: '分级读物'
       }
   });
 
-
+  const coursePool = [
     { name: '创意启蒙画', type: '艺术类', price: 1600, sessions: 48 },
     { name: '绘本英语思维', type: '语言类', price: 2400, sessions: 24 },
     { name: '少儿硬笔艺术', type: '艺术类', price: 1200, sessions: 16 }
@@ -132,13 +131,13 @@ async function main() {
   
   // 添加财务支出闭环
   await prisma.transaction.create({
-    data: { type: 'EXPENSE', amount: 5000, category: 'RENT', method: '微信', description: '4月份房租缴纳', date: new Date(2026, 3, 2) }
+    data: { type: 'EXPENSE', amount: 5000, category: 'RENT', description: '4月份房租缴纳', date: new Date(2026, 3, 2) }
   });
   await prisma.transaction.create({
-    data: { type: 'EXPENSE', amount: 1200, category: 'MATERIALS', method: '支付宝', description: '采购春季教具耗材', date: new Date(2026, 3, 5) }
+    data: { type: 'EXPENSE', amount: 1200, category: 'MATERIALS', description: '采购春季教具耗材', date: new Date(2026, 3, 5) }
   });
   await prisma.transaction.create({
-    data: { type: 'EXPENSE', amount: 3000, category: 'MARKETING', method: '微信', description: '3月份地推宣传', date: new Date(2026, 2, 10) }
+    data: { type: 'EXPENSE', amount: 3000, category: 'MARKETING', description: '3月份地推宣传', date: new Date(2026, 2, 10) }
   });
 
   console.log('\n🚀 全系统镜像同步已 100% 完成！');
