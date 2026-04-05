@@ -10,21 +10,21 @@ if (dbUrl.includes('postgres') || dbUrl.includes('postgresql')) {
   provider = 'postgresql'; 
 }
 
-// 补偿逻辑：如果 DATABASE_URL 为空且为 SQLite 模式，在 process.env 中注入一个默认值
-// 这样可以确保在该进程后续执行 npx prisma generate 时不会因为找不到环境变量而报错
-if (!dbUrl && provider === 'sqlite') {
-  process.env.DATABASE_URL = 'file:./dev.db';
-}
-
 try {
   let schemaContent = fs.readFileSync(schemaPath, 'utf-8');
   
-  // 使用正则匹配替换 provider
-  const updatedContent = schemaContent.replace(
+  // 1. 替换 provider
+  let updatedContent = schemaContent.replace(
     /datasource db\s*{[\s\S]*?provider\s*=\s*".*?"/,
     `datasource db {\n  provider = "${provider}"`
   );
   
+  // 2. 如果是 Vercel 环境且无数据库，强制注入一个合法的 SQLite 本地空路径
+  // 确保 npx prisma generate 不会因为 URL 环境变量缺失而挂掉
+  if (!dbUrl && provider === 'sqlite') {
+    process.env.DATABASE_URL = "file:./dev.db";
+  }
+
   if (schemaContent !== updatedContent) {
     fs.writeFileSync(schemaPath, updatedContent);
     console.log(`✅ [数据库切换] 已自动切换到: ${provider.toUpperCase()} 模式`);
