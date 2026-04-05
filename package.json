@@ -1,6 +1,6 @@
 {
   "name": "yuetao-edu-system",
-  "version": "2.2.4",
+  "version": "2.3.3",
   "private": true,
   "scripts": {
     "dev": "node scripts/setup-db.mjs && next dev",
