@@ -53,8 +53,12 @@ async function main() {
   // 第三步：强制数据库架构推送到环境 (针对 Vercel 静态生成失败的防御)
   // 如果是本地模式且在部署中，必须先推一把 schema，否则 Page 预加载会因为找不到 table 而挂掉
   if (!dbUrl || provider === 'sqlite') {
-    console.log('\n🛠️ [模式同步] 正在为 SQLite 构建临时数据表结构(不保留数据)...');
+    console.log('\n🛠️ [模式同步] 正在为 SQLite 构建临时数据表结构...');
     runCommand('npx prisma db push --accept-data-loss --skip-generate');
+    
+    // 注入环节：如果您希望部署后直接看到数据，在这里注入 Seed
+    console.log('\n🌱 [数据灌入] 正在为演示系统注入 20 名全链路闭环学员数据...');
+    runCommand('node scripts/seed-closed-loop.mjs');
   }
 
   // 第四步：执行 Next.js 构建进程

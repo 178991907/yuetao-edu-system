@@ -129,6 +129,12 @@ export async function getDashboardStats() {
 
     const coursesSummary = await prisma.course.findMany({ take: 3 }).catch(() => []);
 
+    // 核心重构：如果查出的关键指标全是 0 (说明是空库部署)，则自动进入 Mock 预览模式
+    if (activeStudentCount === 0 && totalIncome === 0) {
+       console.log('ℹ️ [空库保护] 正在注入演示版全景数据看板...');
+       return getMockDashboardData();
+    }
+
     return {
       success: true,
       data: {
@@ -162,55 +168,58 @@ export async function getDashboardStats() {
     };
   } catch (error) {
     console.error("⚠️ [数据库异常] 正在启动预览模式 (Mock Data):", error);
-    
-    // 返回演示数据兜底
-    return {
-      success: true,
-      isDemo: true,
-      data: {
-        activeStudentCount: 168,
-        newStudentCount: 12,
-        totalIncome: 45800,
-        totalExpense: 21600,
-        pieData: [
-          { name: '房租物业', value: 12000 },
-          { name: '人员薪资', value: 7500 },
-          { name: '其它支出', value: 2100 }
-        ],
-        trendData: [
-          { month: '10月', '收入': 32000, '支出': 18000, '新增学员': 8 },
-          { month: '11月', '收入': 38000, '支出': 19000, '新增学员': 10 },
-          { month: '12月', '收入': 42000, '支出': 20000, '新增学员': 15 },
-          { month: '1月', '收入': 28000, '支出': 15000, '新增学员': 5 },
-          { month: '2月', '收入': 45000, '支出': 21000, '新增学员': 11 },
-          { month: '3月', '收入': 45800, '支出': 21600, '新增学员': 12 }
-        ],
-        radarData: [
-          { subject: '教学质量', A: 85, fullMark: 100 },
-          { subject: '满意度', A: 92, fullMark: 100 },
-          { subject: '续费率', A: 78, fullMark: 100 },
-          { subject: '转化率', A: 88, fullMark: 100 },
-          { subject: '耗课率', A: 70, fullMark: 100 },
-        ],
-        scatterData: [
-          { x: 5, y: 5600, name: 'DEMO-1' },
-          { x: 7, y: 8900, name: 'DEMO-2' },
-          { x: 6, y: 4500, name: 'DEMO-3' },
-          { x: 9, y: 12000, name: 'DEMO-4' }
-        ],
-        recentTransactions: [
-          { id: '1', studentId: 'demo-1', studentName: '张小陶', courseName: '绘本创意美术', amount: 5600, date: new Date().toISOString(), method: 'WECHAT' },
-          { id: '2', studentId: 'demo-2', studentName: '李思阅', courseName: '幼儿少儿英语', amount: 8900, date: new Date().toISOString(), method: 'ALIPAY' }
-        ],
-        pendingCommunications: [
-          { id: 'p1', studentId: 'demo-1', studentName: '张小陶', content: '家长询问补课流程，需高优跟进', date: new Date().toISOString(), priority: 'HIGH' },
-          { id: 'p2', studentId: 'demo-2', studentName: '李思阅', content: '学员近期状态良好，建议续课沟通', date: new Date().toISOString(), priority: 'NORMAL' }
-        ],
-        coursesSummary: [
-          { id: 'c1', name: '绘本创意美术', price: 5600, totalSessions: 48, description: '启发想象，自由创作' },
-          { id: 'c2', name: '逻辑数学思维', price: 6800, totalSessions: 32, description: '玩转数学，训练思维' }
-        ]
-      }
-    };
+    return getMockDashboardData();
   }
+}
+
+// 抽离 Mock 数据生成逻辑，确保格式与正式数据 100% 同步
+function getMockDashboardData() {
+  return {
+    success: true,
+    isDemo: true,
+    data: {
+      activeStudentCount: 168,
+      newStudentCount: 12,
+      totalIncome: 45800,
+      totalExpense: 21600,
+      pieData: [
+        { name: '房租物业', value: 12000 },
+        { name: '人员薪资', value: 7500 },
+        { name: '其它支出', value: 2100 }
+      ],
+      trendData: [
+        { month: '10月', '收入': 32000, '支出': 18000, '新增学员': 8 },
+        { month: '11月', '收入': 38000, '支出': 19000, '新增学员': 10 },
+        { month: '12月', '收入': 42000, '支出': 20000, '新增学员': 15 },
+        { month: '1月', '收入': 28000, '支出': 15000, '新增学员': 5 },
+        { month: '2月', '收入': 45000, '支出': 21000, '新增学员': 11 },
+        { month: '3月', '收入': 45800, '支出': 21600, '新增学员': 12 }
+      ],
+      radarData: [
+        { subject: '教学质量', A: 85, fullMark: 100 },
+        { subject: '满意度', A: 92, fullMark: 100 },
+        { subject: '续费率', A: 78, fullMark: 100 },
+        { subject: '转化率', A: 88, fullMark: 100 },
+        { subject: '耗课率', A: 70, fullMark: 100 },
+      ],
+      scatterData: [
+        { x: 5, y: 5600, name: 'DEMO-1' },
+        { x: 7, y: 8900, name: 'DEMO-2' },
+        { x: 6, y: 4500, name: 'DEMO-3' },
+        { x: 9, y: 12000, name: 'DEMO-4' }
+      ],
+      recentTransactions: [
+        { id: '1', studentId: 'demo-1', studentName: '张小陶', courseName: '绘本创意美术', amount: 5600, date: new Date().toISOString(), method: 'WECHAT' },
+        { id: '2', studentId: 'demo-2', studentName: '李思阅', courseName: '幼儿少儿英语', amount: 8900, date: new Date().toISOString(), method: 'ALIPAY' }
+      ],
+      pendingCommunications: [
+        { id: 'p1', studentId: 'demo-1', studentName: '张小陶', content: '家长询问补课流程，需高优跟进', date: new Date().toISOString(), priority: 'HIGH' },
+        { id: 'p2', studentId: 'demo-2', studentName: '李思阅', content: '学员近期状态良好，建议续课沟通', date: new Date().toISOString(), priority: 'NORMAL' }
+      ],
+      coursesSummary: [
+        { id: 'c1', name: '绘本创意美术', price: 5600, totalSessions: 48, description: '启发想象，自由创作' },
+        { id: 'c2', name: '逻辑数学思维', price: 6800, totalSessions: 32, description: '玩转数学，训练思维' }
+      ]
+    }
+  };
 }
