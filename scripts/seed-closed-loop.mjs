@@ -21,6 +21,12 @@ async function main() {
     const parentName = `${firstNames[(i + 5) % 20]}女士`;
     const parentPhone = `13${Math.floor(Math.random() * 900000000 + 100000000)}`;
 
+    // 随机生成 5-10 岁的生日
+    const birthYear = 2026 - (Math.floor(Math.random() * 6) + 5); 
+    const birthMonth = Math.floor(Math.random() * 12);
+    const birthDay = Math.floor(Math.random() * 28) + 1;
+    const birthDate = new Date(birthYear, birthMonth, birthDay);
+
     // 1. 创建学员
     const student = await prisma.student.create({
       data: {
@@ -28,11 +34,38 @@ async function main() {
         gender,
         parentName,
         parentPhone,
+        age: 2026 - birthYear,
+        birthDate: birthDate,
         parentRelation: '妈妈',
         status: 'ACTIVE',
         remarks: `演示数据：该学员已完成缴费并处于正常消课状态（编号 ${i + 1}）。`,
       },
     });
+
+    // ... (保持中间逻辑)
+
+    // 5. 自动同步动态记录 (省略部分逻辑同步)
+    // ...
+
+    // 6. 添加支出流水 (每 2 人产生 1 笔机构支出)
+    if (i % 2 === 0) {
+      const expenses = [
+        { type: 'EXPENSE', category: 'SALARY', amount: 5000, desc: '外部兼职老师劳务费' },
+        { type: 'EXPENSE', category: 'RENT', amount: 12000, desc: '3月份房租物业费' },
+        { type: 'EXPENSE', category: 'MATERIALS', amount: 1500, desc: '画具耗材补货单' },
+        { type: 'EXPENSE', category: 'MARKETING', amount: 3000, desc: '朋友圈推广活动费用' }
+      ];
+      const exp = expenses[Math.floor(Math.random() * expenses.length)];
+      await prisma.transaction.create({
+        data: {
+          type: exp.type,
+          category: exp.category,
+          amount: exp.amount,
+          description: exp.desc,
+          date: new Date()
+        }
+      });
+    }
 
     // 2. 选择一门课程进行报名
     const courseData = courses[Math.floor(Math.random() * courses.length)];
