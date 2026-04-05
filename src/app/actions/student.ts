@@ -97,5 +97,43 @@ export async function createStudent(formData: FormData) {
     return { success: true, data: student };
   } catch (e) { return { success: false, error: "写入失败" }; }
 }
-export async function updateStudent(id: string, formData: FormData) { revalidatePath("/students"); return { success: true }; }
-export async function deleteStudent(id: string) { revalidatePath("/students"); return { success: true }; }
+export async function updateStudent(id: string, formData: FormData) {
+  try {
+    const data: any = {};
+    const name = formData.get("name") as string;
+    const englishName = formData.get("englishName") as string;
+    const gender = formData.get("gender") as string;
+    const birthDate = formData.get("birthDate") as string;
+    const parentName = formData.get("parentName") as string;
+    const parentPhone = formData.get("parentPhone") as string;
+    const parentRelation = formData.get("parentRelation") as string;
+    const remarks = formData.get("remarks") as string;
+
+    if (name) data.name = name;
+    if (englishName !== null) data.englishName = englishName;
+    if (gender !== null) data.gender = gender;
+    if (birthDate) data.birthDate = new Date(birthDate);
+    if (parentName !== null) data.parentName = parentName;
+    if (parentPhone !== null) data.parentPhone = parentPhone;
+    if (parentRelation !== null) data.parentRelation = parentRelation;
+    if (remarks !== null) data.remarks = remarks;
+
+    await prisma.student.update({ where: { id }, data });
+    revalidatePath("/students");
+    revalidatePath(`/students/${id}`);
+    return { success: true };
+  } catch (e) {
+    console.error("Update failed:", e);
+    return { success: false, error: "更新信息失败，请稍后重试" };
+  }
+}
+
+export async function deleteStudent(id: string) {
+  try {
+    await prisma.student.delete({ where: { id } });
+    revalidatePath("/students");
+    return { success: true };
+  } catch (e) {
+    return { success: false, error: "由于存在关联业务数据，删除失败" };
+  }
+}
