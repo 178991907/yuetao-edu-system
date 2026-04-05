@@ -240,7 +240,7 @@ export function StudentProfileClient({ student, allCourses }: { student: any, al
     XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(baseInfo), "基本信息")
 
     // 2. 缴费记录
-    if (student.payments.length > 0) {
+    if (student?.payments?.length > 0) {
       const paymentData = student.payments.map((p: any) => ({
         "日期": new Date(p.date).toLocaleDateString(),
         "金额": p.amount,
@@ -252,7 +252,7 @@ export function StudentProfileClient({ student, allCourses }: { student: any, al
     }
 
     // 3. 沟通记录
-    if (student.communications.length > 0) {
+    if (student?.communications?.length > 0) {
       const commData = student.communications.map((c: any) => ({
         "日期": new Date(c.date).toLocaleDateString(),
         "教师反馈": c.teacherFeedback,
@@ -263,7 +263,7 @@ export function StudentProfileClient({ student, allCourses }: { student: any, al
     }
 
     // 4. 物资领用
-    if (student.inventoryTransactions.length > 0) {
+    if (student?.inventoryTransactions?.length > 0) {
       const invData = student.inventoryTransactions.map((t: any) => ({
         "日期": new Date(t.date).toLocaleDateString(),
         "物品": t.itemName || "-",
@@ -379,7 +379,7 @@ export function StudentProfileClient({ student, allCourses }: { student: any, al
             </CardHeader>
             <CardContent className="p-0">
               <div className="divide-y divide-slate-100">
-                {student.enrollments && student.enrollments.length > 0 ? (
+                {student?.enrollments?.length > 0 ? (
                   student.enrollments.map((enrollment: any) => (
                     <div key={enrollment.id} className="px-6 py-5 hover:bg-slate-50/80 transition-all border-l-4 border-transparent hover:border-blue-500">
                       <div className="flex items-start justify-between mb-2">
@@ -450,7 +450,7 @@ export function StudentProfileClient({ student, allCourses }: { student: any, al
               </Link>
             </CardHeader>
             <CardContent className="p-0">
-              {student.payments.length > 0 ? (
+              {student?.payments?.length > 0 ? (
                 <div className="divide-y divide-slate-100">
                   {student.payments.map((payment: any) => (
                     <Link href={`/finance?student=${student.id}`} key={payment.id} className="block px-6 py-4 hover:bg-slate-50 border-b border-transparent hover:border-emerald-100 transition-all cursor-pointer">
@@ -488,7 +488,7 @@ export function StudentProfileClient({ student, allCourses }: { student: any, al
               </Link>
             </CardHeader>
             <CardContent className="p-0">
-              {student.communications.length > 0 ? (
+              {student?.communications?.length > 0 ? (
                 <div className="divide-y divide-slate-100">
                   {student.communications.slice(0, 5).map((comm: any) => (
                     <Link href={`/communication?student=${student.id}`} key={comm.id} className="block px-6 py-4 hover:bg-slate-50 border-b border-transparent hover:border-purple-100 transition-all cursor-pointer">
@@ -529,7 +529,7 @@ export function StudentProfileClient({ student, allCourses }: { student: any, al
               </Link>
             </CardHeader>
             <CardContent className="p-0">
-              {student.inventoryTransactions.length > 0 ? (
+              {student?.inventoryTransactions?.length > 0 ? (
                 <div className="divide-y divide-slate-100">
                   {student.inventoryTransactions.slice(0, 5).map((trans: any) => (
                     <Link href={`/inventory?student=${student.id}`} key={trans.id} className="block px-6 py-4 hover:bg-slate-50 border-b border-transparent hover:border-amber-100 transition-all cursor-pointer">
@@ -567,7 +567,7 @@ export function StudentProfileClient({ student, allCourses }: { student: any, al
               </Link>
             </CardHeader>
             <CardContent className="p-0">
-              {student.surveys.length > 0 ? (
+              {student?.surveys?.length > 0 ? (
                 <div className="divide-y divide-slate-100">
                   {student.surveys.slice(0, 5).map((survey: any) => (
                     <Link href={`/surveys-manage?student=${student.id}`} key={survey.id} className="block px-6 py-4 hover:bg-slate-50 border-b border-transparent hover:border-pink-100 transition-all cursor-pointer">
