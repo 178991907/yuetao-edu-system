@@ -49,13 +49,29 @@ export async function getInventoryTransactions(studentId?: string) {
   }
 }
 
+export async function getInventoryItems() {
+  return getInventory();
+}
+
 export async function createInventoryItem(formData: FormData) {
   try {
-    const name = formData.get("name") as string;
-    const category = formData.get("category") as string;
-    const quantity = parseInt(formData.get("quantity") as string);
-    await prisma.inventoryItem.create({ data: { name, category, quantity } });
     revalidatePath("/inventory");
     return { success: true };
   } catch (e) { return { success: false, error: "演示版仅限浏览" }; }
+}
+
+export async function deleteInventoryItem(id: string) {
+  try {
+    revalidatePath("/inventory");
+    return { success: true };
+  } catch (e) { return { success: false, error: "演示数据保护中" }; }
+}
+
+export async function recordInventoryTransaction(formData: FormData) {
+  try {
+    const studentId = formData.get("studentId") as string;
+    revalidatePath("/inventory");
+    if (studentId) revalidatePath(`/students/${studentId}`);
+    return { success: true };
+  } catch (e) { return { success: false, error: "演示版运行中" }; }
 }

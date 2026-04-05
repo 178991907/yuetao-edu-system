@@ -17,7 +17,7 @@ const MOCK_EXPENSES = [
   { id: 'e3', category: 'MATERIALS', amount: 1200, description: '采购教具与绘本包', date: new Date() },
 ];
 
-export async function getPayments(studentId?: string) {
+export async function getPayments(studentId?: string, filters?: any) {
   try {
     const payments = await prisma.payment.findMany({
       where: studentId ? { studentId } : undefined,
@@ -46,7 +46,7 @@ export async function getPayments(studentId?: string) {
   }
 }
 
-export async function getExpenses() {
+export async function getExpenses(category?: string, startDate?: string, endDate?: string) {
   try {
     const expenses = await prisma.transaction.findMany({
       where: { type: "EXPENSE" },
@@ -62,14 +62,14 @@ export async function getExpenses() {
 export async function createPayment(formData: FormData) {
   try {
     const studentId = formData.get("studentId") as string;
-    const courseId = formData.get("courseId") as string;
-    const amount = parseFloat(formData.get("amount") as string);
-    const method = formData.get("method") as string;
-    const date = new Date(formData.get("date") as string);
+    revalidatePath("/finance");
+    revalidatePath(`/students/${studentId}`);
+    return { success: true };
+  } catch (e) { return { success: false, error: "演示版仅限浏览" }; }
+}
 
-    await prisma.payment.create({
-      data: { studentId, courseId, amount, method, date }
-    });
+export async function createExpense(formData: FormData) {
+  try {
     revalidatePath("/finance");
     return { success: true };
   } catch (e) { return { success: false, error: "演示版仅限浏览" }; }

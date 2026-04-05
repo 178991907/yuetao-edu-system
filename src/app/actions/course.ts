@@ -65,10 +65,24 @@ export async function createCourse(formData: FormData) {
     const type = formData.get("type") as string;
     const price = parseFloat(formData.get("price") as string);
     const totalSessions = parseInt(formData.get("totalSessions") as string);
-    await prisma.course.create({ data: { name, type, price, totalSessions, status: 'ACTIVE' } });
+    await prisma.course.create({ data: { name, type, price, totalSessions } });
     revalidatePath("/courses");
     return { success: true };
   } catch (e) { return { success: false, error: "演示版仅限浏览" }; }
+}
+
+export async function updateCourse(id: string, formData: FormData) {
+  try {
+    revalidatePath("/courses");
+    return { success: true };
+  } catch (e) { return { success: false, error: "演示版运行中" }; }
+}
+
+export async function deleteCourse(id: string) {
+  try {
+    revalidatePath("/courses");
+    return { success: true };
+  } catch (e) { return { success: false, error: "演示版本保护中" }; }
 }
 
 export async function upsertEnrollment(id: string | null, formData: FormData) {

@@ -39,18 +39,21 @@ export async function getCommunications(studentId?: string) {
 export async function createCommunication(formData: FormData) {
   try {
     const studentId = formData.get("studentId") as string;
-    const teacherFeedback = formData.get("teacherFeedback") as string;
-    if (!studentId || !teacherFeedback) return { success: false, error: "Missing required fields" };
-    
-    await prisma.communicationLog.create({
-      data: { studentId, teacherFeedback, date: new Date() }
-    });
     revalidatePath("/communication");
     revalidatePath(`/students/${studentId}`);
     return { success: true };
   } catch (e) {
     return { success: false, error: "演示版仅限浏览" };
   }
+}
+
+export async function updateCommunication(formData: FormData) {
+  try {
+    const studentId = formData.get("studentId") as string;
+    revalidatePath("/communication");
+    if (studentId) revalidatePath(`/students/${studentId}`);
+    return { success: true };
+  } catch (e) { return { success: false, error: "演示版运行中" }; }
 }
 
 export async function deleteCommunication(id: string, studentId?: string) {
