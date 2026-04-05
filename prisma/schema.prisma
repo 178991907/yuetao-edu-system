@@ -1,0 +1,212 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Student {
+  id                    String                 @id @default(cuid())
+  name                  String
+  englishName           String?
+  gender                String?
+  age                   Int?
+  parentName            String?
+  parentPhone           String?
+  enrollmentDate        DateTime               @default(now())
+  status                String                 @default("ACTIVE")
+  createdAt             DateTime               @default(now())
+  updatedAt             DateTime               @updatedAt
+  birthDate             DateTime?
+  parentRelation        String?
+  remarks               String?
+  communications        CommunicationLog[]
+  enrollments           Enrollment[]
+  inventoryTransactions InventoryTransaction[]
+  payments              Payment[]
+  activities            StudentActivity[]
+  surveys               SurveyResponse[]
+}
+
+model StudentActivity {
+  id          String   @id @default(cuid())
+  studentId   String
+  type        String
+  title       String
+  description String?
+  amount      Float?
+  date        DateTime @default(now())
+  refId       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  student     Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+}
+
+model Course {
+  id            String       @id @default(cuid())
+  name          String
+  type          String
+  price         Float
+  totalSessions Int
+  description   String?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  enrollments   Enrollment[]
+  payments      Payment[]
+}
+
+model Enrollment {
+  id                  String   @id @default(cuid())
+  studentId           String
+  courseId            String
+  remainingSessions   Int
+  status              String   @default("ACTIVE")
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+  scheduleDescription String?
+  sessionsPerTime     Int?     @default(1)
+  weeklyFrequency     Int?
+  student             Student  @relation(fields: [studentId], references: [id])
+  course              Course   @relation(fields: [courseId], references: [id])
+
+  @@unique([studentId, courseId])
+}
+
+model Payment {
+  id        String   @id @default(cuid())
+  studentId String
+  courseId  String?
+  amount    Float
+  date      DateTime @default(now())
+  method    String
+  remark    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  student   Student  @relation(fields: [studentId], references: [id])
+  course    Course?  @relation(fields: [courseId], references: [id])
+}
+
+model Transaction {
+  id          String   @id @default(cuid())
+  type        String
+  category    String
+  amount      Float
+  date        DateTime @default(now())
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model CommunicationLog {
+  id              String   @id @default(cuid())
+  studentId       String
+  date            DateTime @default(now())
+  teacherFeedback String
+  parentRequest   String?
+  followUpPlan    String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  student         Student  @relation(fields: [studentId], references: [id])
+}
+
+model InventoryItem {
+  id           String                 @id @default(cuid())
+  name         String
+  category     String
+  quantity     Int                    @default(0)
+  unit         String                 @default("本")
+  price        Float                  @default(0.0)
+  costPrice    Float                  @default(0.0)
+  description  String?
+  createdAt    DateTime               @default(now())
+  updatedAt    DateTime               @updatedAt
+  transactions InventoryTransaction[]
+}
+
+model InventoryTransaction {
+  id        String         @id @default(cuid())
+  itemId    String?
+  itemName  String?
+  type      String
+  quantity  Int
+  date      DateTime       @default(now())
+  remark    String?
+  studentId String?
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+  student   Student?       @relation(fields: [studentId], references: [id])
+  item      InventoryItem? @relation(fields: [itemId], references: [id])
+}
+
+model SurveyTemplate {
+  id          String           @id @default(cuid())
+  name        String
+  slug        String           @unique
+  description String?
+  isActive    Boolean          @default(true)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  questions   SurveyQuestion[]
+  responses   SurveyResponse[]
+}
+
+model SurveyQuestion {
+  id          String         @id @default(cuid())
+  templateId  String
+  label       String
+  fieldName   String
+  fieldType   String         @default("text")
+  options     String?
+  required    Boolean        @default(false)
+  placeholder String?
+  helpText    String?
+  order       Int            @default(0)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  template    SurveyTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
+}
+
+model SurveyResponse {
+  id                  String          @id @default(cuid())
+  studentId           String?
+  templateId          String?
+  surveyType          String
+  childNameCn         String
+  childNameEn         String?
+  gender              String
+  birthDate           String
+  parentName          String
+  relationship        String
+  phone               String
+  address             String
+  ageExposedEnglish   String
+  razLevel            String
+  oxfordTreeLevel     String
+  otherLevel          String?
+  unreadBooks         String?
+  readingMethod       String
+  weeklyBooksCount    String
+  parentChildCommFreq String
+  offlineInstitute    String
+  parentsEnglishLevel String
+  learningGoal        String
+  specialNotes        String?
+  createdAt           DateTime        @default(now())
+  updatedAt           DateTime        @updatedAt
+  student             Student?        @relation(fields: [studentId], references: [id])
+  template            SurveyTemplate? @relation(fields: [templateId], references: [id])
+}
+
+model User {
+  id        String   @id @default(cuid())
+  username  String   @unique
+  email     String?  @unique
+  password  String
+  name      String?
+  role      String   @default("TEACHER")
+  avatar    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
