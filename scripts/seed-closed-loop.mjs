@@ -33,23 +33,30 @@ async function main() {
   const lastNames = ['诗涵', '宇博', '梦瑶', '俊豪', '若冰', '思源', '雅琪', '子轩', '可欣', '沐辰', '嘉懿', '雨霏', '晨曦', '欣怡', '浩宇', '语馨', '梓睿', '一诺', '子悦', '涵'];
 
   for (let i = 0; i < 20; i++) {
+    // 严格对齐 student.ts 的影子数据
     const name = `${firstNames[i]}${lastNames[i]}`;
     const studentId = i < 2 ? `cmnl-stu-00${i+1}` : `cmnl-stu-auto-${i-2}`;
-    const status = i < 5 ? 'GRADUATED' : 'ACTIVE';
+    
+    let gender = i % 2 === 0 ? 'female' : 'male';
+    let age = 6 + (i % 4);
+    let status = 'ACTIVE'; // 统一设为在读，确保与档案一致
+
+    if (i === 0) { gender = 'female'; age = 7; }
+    else if (i === 1) { gender = 'male'; age = 8; }
 
     const student = await prisma.student.create({
       data: {
-        id: studentId, // 强制指定 ID，与 Action 中的影子数据一一对应
+        id: studentId,
         name,
-        gender: i % 2 === 0 ? 'male' : 'female',
-        age: 7,
+        gender,
+        age,
         birthDate: new Date(2018, 5, 12),
         parentName: '陈女士',
         parentPhone: '13812345678',
         parentRelation: '妈妈',
         status: status,
-        remarks: '该学员由系统影子同步，确保云端档案 100% 详实。',
-        enrollmentDate: new Date(2025, 2, 1)
+        remarks: i === 0 ? '该学员对色彩极其敏感，构图大胆非常有层次感。目前已完成 L1 阶段创意美术测评。' : (i === 1 ? '近期在硬笔书写力量控制上有明显提升。' : '该学员由系统影子同步，确保云端档案 100% 详实。'),
+        enrollmentDate: i === 0 ? new Date('2025-03-01') : (i === 1 ? new Date('2025-03-02') : new Date('2025-03-03'))
       },
     });
 
