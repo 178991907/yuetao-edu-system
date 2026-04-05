@@ -10,6 +10,12 @@ if (dbUrl.includes('postgres') || dbUrl.includes('postgresql')) {
   provider = 'postgresql'; 
 }
 
+// 补偿逻辑：如果 DATABASE_URL 为空且为 SQLite 模式，在 process.env 中注入一个默认值
+// 这样可以确保在该进程后续执行 npx prisma generate 时不会因为找不到环境变量而报错
+if (!dbUrl && provider === 'sqlite') {
+  process.env.DATABASE_URL = 'file:./dev.db';
+}
+
 try {
   let schemaContent = fs.readFileSync(schemaPath, 'utf-8');
   
