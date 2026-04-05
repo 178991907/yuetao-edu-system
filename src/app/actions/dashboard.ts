@@ -193,7 +193,10 @@ export async function getDashboardStats() {
           { subject: '耗课率', A: 70, fullMark: 100 },
         ],
         scatterData: [
-          { x: 5, y: 5600 }, { x: 7, y: 8900 }, { x: 6, y: 4500 }, { x: 9, y: 12000 }
+          { x: 5, y: 5600, name: 'DEMO-1' },
+          { x: 7, y: 8900, name: 'DEMO-2' },
+          { x: 6, y: 4500, name: 'DEMO-3' },
+          { x: 9, y: 12000, name: 'DEMO-4' }
         ],
         recentTransactions: [
           { id: '1', studentId: 'demo-1', studentName: '张小陶', courseName: '绘本创意美术', amount: 5600, date: new Date().toISOString(), method: 'WECHAT' },
