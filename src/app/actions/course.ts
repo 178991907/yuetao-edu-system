@@ -11,9 +11,23 @@ const MOCK_COURSES = [
 
 const MOCK_ENROLLMENTS = [
   { id: 'e1', studentId: 'cmnl-stu-001', studentName: '罗诗涵', courseName: '创意启蒙画', remainingSessions: 32, status: 'ACTIVE', createdAt: new Date('2025-03-01') },
-  { id: 'e2', studentId: 'cmnl-stu-002', studentName: '马宇博', courseName: '少儿硬笔艺术', remainingSessions: 8, status: 'ACTIVE', createdAt: new Date('2025-03-02') },
-  { id: 'e3', studentId: 'cmnl-stu-auto-0', studentName: '郭梦瑶', courseName: '绘本英语思维', remainingSessions: 22, status: 'ACTIVE', createdAt: new Date('2025-03-03') }
+  { id: 'e2', studentId: 'cmnl-stu-002', studentName: '马宇博', courseName: '少儿硬笔艺术', remainingSessions: 8, status: 'ACTIVE', createdAt: new Date('2025-03-02') }
 ];
+
+const firstNames = ['罗', '马', '郭', '何', '林', '高', '朱', '胡', '孙', '徐', '吴', '周', '黄', '赵', '杨', '陈', '刘', '张', '李', '王'];
+const lastNames = ['诗涵', '宇博', '梦瑶', '俊豪', '若冰', '思源', '雅琪', '子轩', '可欣', '沐辰', '嘉懿', '雨霏', '晨曦', '欣怡', '浩宇', '语馨', '梓睿', '一诺', '子悦', '涵'];
+
+for (let i = 2; i < 20; i++) {
+  MOCK_ENROLLMENTS.push({
+    id: `e${i+1}`,
+    studentId: `cmnl-stu-auto-${i-2}`,
+    studentName: `${firstNames[i]}${lastNames[i]}`,
+    courseName: i % 2 === 0 ? '绘本英语思维' : '创意启蒙画',
+    remainingSessions: 24 - (i % 5),
+    status: 'ACTIVE',
+    createdAt: new Date(`2025-03-${String((i % 28) + 1).padStart(2, '0')}`)
+  });
+}
 
 export async function getCourses(studentId?: string) {
   try {

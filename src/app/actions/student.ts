@@ -63,24 +63,37 @@ const PERFECT_CASE_STUDENTS = [
   // ... 其他 18 名学员将按照此列表索引逻辑自动生成
 ];
 
-// 自动生成剩余 18 名，确保列表满载
-const firstNames = ['郭', '何', '林', '高', '朱', '胡', '孙', '徐', '吴', '周', '黄', '赵', '杨', '陈', '刘', '张', '李', '王'];
-const lastNames = ['梦瑶', '俊豪', '若冰', '思源', '雅琪', '子轩', '可欣', '沐辰', '嘉懿', '雨霏', '晨曦', '欣怡', '浩宇', '语馨', '梓睿', '一诺', '子悦', '涵'];
+const firstNames = ['罗', '马', '郭', '何', '林', '高', '朱', '胡', '孙', '徐', '吴', '周', '黄', '赵', '杨', '陈', '刘', '张', '李', '王'];
+const lastNames = ['诗涵', '宇博', '梦瑶', '俊豪', '若冰', '思源', '雅琪', '子轩', '可欣', '沐辰', '嘉懿', '雨霏', '晨曦', '欣怡', '浩宇', '语馨', '梓睿', '一诺', '子悦', '涵'];
 
-for (let i = 0; i < 18; i++) {
+for (let i = 2; i < 20; i++) {
+  const studentName = `${firstNames[i]}${lastNames[i]}`;
   PERFECT_CASE_STUDENTS.push({
     ...PERFECT_CASE_STUDENTS[0],
-    id: `cmnl-stu-auto-${i}`,
-    name: `${firstNames[i]}${lastNames[i]}`,
+    id: `cmnl-stu-auto-${i-2}`,
+    name: studentName,
     englishName: `Student-${i}`,
-    gender: i % 2 === 0 ? 'male' : 'female',
+    gender: i % 2 === 0 ? 'female' : 'male',
     age: 6 + (i % 4),
-    enrollments: [{ ...PERFECT_CASE_STUDENTS[0].enrollments[0], id: `ea-${i}` }],
-    payments: [{ ...PERFECT_CASE_STUDENTS[0].payments[0], id: `pa-${i}` }],
-    communications: [],
-    activities: [],
-    surveys: [],
-    inventoryTransactions: []
+    status: 'ACTIVE',
+    enrollments: [{ 
+      id: `e${i+1}`, course: { name: i % 2 === 0 ? '绘本英语思维' : '创意启蒙画', price: 1600, totalSessions: 48 }, remainingSessions: 24 - (i % 5), status: 'ACTIVE', createdAt: new Date(`2025-03-${String((i % 28) + 1).padStart(2, '0')}`) 
+    }],
+    payments: [{ 
+      id: `p${i+1}`, course: { name: i % 2 === 0 ? '绘本英语思维' : '自然科学实验' }, amount: i % 2 === 0 ? 2400 : 1800, method: i % 3 === 0 ? '支付宝' : '微信', date: new Date(`2025-03-${String((i % 28) + 1).padStart(2, '0')}`), remark: '新报录入' 
+    }],
+    communications: [{ 
+      id: `c${i+1}`, teacherFeedback: i % 2 === 0 ? '绘本英语读音标准，互动热情高涨。已完成 Level D 级别词汇测评。' : '本周科学实验表现出色，动手能力很强。', parentRequest: i % 3 === 0 ? '在家里也会听绘本。' : '上周感冒了目前刚恢复。', followUpPlan: '常规反馈：课后回访', date: new Date(Date.now() - (i % 5) * 86400000) 
+    }],
+    activities: [{ 
+      id: `a${i+1}`, type: 'PAYMENT', title: '缴纳学费', description: `金额 ¥${i % 2 === 0 ? 2400 : 1800}`, date: new Date(`2025-03-${String((i % 28) + 1).padStart(2, '0')}`) 
+    }],
+    surveys: [{ 
+      id: `sur-${i+1}`, template: { name: '家长调查表' }, childNameCn: studentName, razLevel: 'Level ' + String.fromCharCode(65 + (i % 5)), createdAt: new Date(`2025-03-${String((i % 28) + 1).padStart(2, '0')}`) 
+    }],
+    inventoryTransactions: [{ 
+      id: `it${i+1}`, itemName: i % 2 === 0 ? '儿童节定制绘本包' : '创意启蒙画教具套装', type: 'OUT', quantity: 1, date: new Date(`2025-03-${String((i % 28) + 1).padStart(2, '0')}`) 
+    }]
   });
 }
 

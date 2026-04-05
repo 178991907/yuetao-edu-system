@@ -6,10 +6,24 @@ import { revalidatePath } from "next/cache";
 // 财务影子数据：与核心 20 名学员档案 100% 对齐
 const MOCK_PAYMENTS = [
   { id: 'p1', studentId: 'cmnl-stu-001', studentName: '罗诗涵', courseName: '创意启蒙画', amount: 1600, method: '微信', date: new Date('2025-03-01'), remark: '实收已入账' },
-  { id: 'p2', studentId: 'cmnl-stu-002', studentName: '马宇博', courseName: '少儿硬笔艺术', amount: 1200, method: '支付宝', date: new Date('2025-03-02'), remark: '春季班学费' },
-  { id: 'p3', studentId: 'cmnl-stu-auto-0', studentName: '郭梦瑶', courseName: '绘本英语思维', amount: 2400, method: '微信', date: new Date('2025-03-03'), remark: '新报录入' },
-  { id: 'p4', studentId: 'cmnl-stu-auto-1', studentName: '何俊豪', courseName: '自然科学实验', amount: 1800, method: '微信', date: new Date('2025-03-04') },
+  { id: 'p2', studentId: 'cmnl-stu-002', studentName: '马宇博', courseName: '少儿硬笔艺术', amount: 1200, method: '支付宝', date: new Date('2025-03-02'), remark: '春季班学费' }
 ];
+
+const firstNames = ['罗', '马', '郭', '何', '林', '高', '朱', '胡', '孙', '徐', '吴', '周', '黄', '赵', '杨', '陈', '刘', '张', '李', '王'];
+const lastNames = ['诗涵', '宇博', '梦瑶', '俊豪', '若冰', '思源', '雅琪', '子轩', '可欣', '沐辰', '嘉懿', '雨霏', '晨曦', '欣怡', '浩宇', '语馨', '梓睿', '一诺', '子悦', '涵'];
+
+for (let i = 2; i < 20; i++) {
+  MOCK_PAYMENTS.push({
+    id: `p${i+1}`,
+    studentId: `cmnl-stu-auto-${i-2}`,
+    studentName: `${firstNames[i]}${lastNames[i]}`,
+    courseName: i % 2 === 0 ? '绘本英语思维' : '自然科学实验',
+    amount: i % 2 === 0 ? 2400 : 1800,
+    method: i % 3 === 0 ? '支付宝' : '微信',
+    date: new Date(`2025-03-${String((i % 28) + 1).padStart(2, '0')}`),
+    remark: '新报录入'
+  });
+}
 
 const MOCK_EXPENSES = [
   { id: 'e1', category: 'RENT', amount: 5000, description: '4月份房租缴纳', date: new Date() },

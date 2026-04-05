@@ -107,6 +107,25 @@ export async function deleteSurvey(id: string) {
   }
 }
 
+const firstNames = ['罗', '马', '郭', '何', '林', '高', '朱', '胡', '孙', '徐', '吴', '周', '黄', '赵', '杨', '陈', '刘', '张', '李', '王'];
+const lastNames = ['诗涵', '宇博', '梦瑶', '俊豪', '若冰', '思源', '雅琪', '子轩', '可欣', '沐辰', '嘉懿', '雨霏', '晨曦', '欣怡', '浩宇', '语馨', '梓睿', '一诺', '子悦', '涵'];
+
+const MOCK_SURVEYS = [
+  { id: 'sur-1', surveyType: 'PARENT', childNameCn: '罗诗涵', parentName: '陈女士', relationship: '妈妈', phone: '138****5678', createdAt: new Date('2025-03-01') },
+  { id: 'sur-2', surveyType: 'PARENT', childNameCn: '马宇博', parentName: '马先生', relationship: '爸爸', phone: '139****9999', createdAt: new Date('2025-03-02') }
+];
+for(let i=2; i<20; i++) {
+  MOCK_SURVEYS.push({
+    id: `sur-${i+1}`,
+    surveyType: i % 2 === 0 ? 'PARENT' : 'ENGLISH',
+    childNameCn: `${firstNames[i]}${lastNames[i]}`,
+    parentName: i % 2 === 0 ? '测试家长A' : '测试家长B',
+    relationship: i % 3 === 0 ? '妈妈' : '爸爸',
+    phone: `150****${String(i).padStart(4, '0')}`,
+    createdAt: new Date(`2025-03-${String((i % 28) + 1).padStart(2, '0')}`)
+  });
+}
+
 export async function getSurveys(studentId?: string) {
   try {
     const surveys = await prisma.surveyResponse.findMany({
@@ -115,24 +134,13 @@ export async function getSurveys(studentId?: string) {
     });
     
     if (surveys.length === 0) {
-      return { 
-        success: true, 
-        isDemo: true,
-        data: [
-          { id: 'sur-1', surveyType: 'PARENT', childNameCn: '王红华', parentName: '王晓梅', relationship: '妈妈', phone: '138****5678', createdAt: new Date() },
-          { id: 'sur-2', surveyType: 'PARENT', childNameCn: '李铭宇', parentName: '李大壮', relationship: '爸爸', phone: '139****1234', createdAt: new Date() },
-          { id: 'sur-3', surveyType: 'ENGLISH', childNameCn: '张子轩', parentName: '张建国', relationship: '爸爸', phone: '150****8888', createdAt: new Date() }
-        ]
-      };
+      const filtered = studentId ? MOCK_SURVEYS.filter(s => s.childNameCn === studentId) : MOCK_SURVEYS; // 这里为了简化用名字模糊匹配，或者直接传全量
+      return { success: true, isDemo: true, data: MOCK_SURVEYS };
     }
     return { success: true, data: surveys };
   } catch (error) {
     console.warn("⚠️ [数据库异常] 正在回退至问卷记录预览模式");
-    return { 
-      success: true, 
-      isDemo: true,
-      data: [{ id: 'sur-1', surveyType: 'PARENT', childNameCn: '预览学员', parentName: '演示家长', relationship: '妈妈', phone: '138****0000', createdAt: new Date() }]
-    };
+    return { success: true, isDemo: true, data: MOCK_SURVEYS };
   }
 }
 

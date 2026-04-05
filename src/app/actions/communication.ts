@@ -5,9 +5,23 @@ import { revalidatePath } from "next/cache";
 
 const MOCK_COMMUNICATIONS = [
   { id: 'c1', studentId: 'cmnl-stu-001', studentName: '罗诗涵', teacherFeedback: 'Sherry 在色彩极其敏锐，构图非常有想象力。今天要特别表扬今天的构图完整度。', parentRequest: '希望能关注一下拼写。', followUpPlan: '待发送反馈卡 (重要)', date: new Date() },
-  { id: 'c2', studentId: 'cmnl-stu-002', studentName: '马宇博', teacherFeedback: 'Kevin 宇博在硬笔书写力量控制上有明显提升，结构愈发稳健。建议平时多进行悬腕平衡练习。', parentRequest: '好的老师，谢谢录的小视频。', followUpPlan: '待跟进：周五测评', date: new Date() },
-  { id: 'c3', studentId: 'cmnl-stu-auto-0', studentName: '郭梦瑶', teacherFeedback: '绘本英语读音标准，互动热情高涨。已完成 Level D 级别词汇测评。', parentRequest: '在家里也会听绘本。', followUpPlan: '常规反馈：课后回访', date: new Date() }
+  { id: 'c2', studentId: 'cmnl-stu-002', studentName: '马宇博', teacherFeedback: 'Kevin 宇博在硬笔书写力量控制上有明显提升，结构愈发稳健。建议平时多进行悬腕平衡练习。', parentRequest: '好的老师，谢谢录的小视频。', followUpPlan: '待跟进：周五测评', date: new Date() }
 ];
+
+const firstNames = ['罗', '马', '郭', '何', '林', '高', '朱', '胡', '孙', '徐', '吴', '周', '黄', '赵', '杨', '陈', '刘', '张', '李', '王'];
+const lastNames = ['诗涵', '宇博', '梦瑶', '俊豪', '若冰', '思源', '雅琪', '子轩', '可欣', '沐辰', '嘉懿', '雨霏', '晨曦', '欣怡', '浩宇', '语馨', '梓睿', '一诺', '子悦', '涵'];
+
+for (let i = 2; i < 20; i++) {
+  MOCK_COMMUNICATIONS.push({
+    id: `c${i+1}`,
+    studentId: `cmnl-stu-auto-${i-2}`,
+    studentName: `${firstNames[i]}${lastNames[i]}`,
+    teacherFeedback: i % 2 === 0 ? '绘本英语读音标准，互动热情高涨。已完成 Level D 级别词汇测评。' : '本周科学实验表现出色，动手能力很强。',
+    parentRequest: i % 3 === 0 ? '在家里也会听绘本。' : '上周感冒了目前刚恢复。',
+    followUpPlan: '常规反馈：课后回访',
+    date: new Date(Date.now() - (i % 5) * 86400000)
+  });
+}
 
 export async function getCommunications(studentId?: string) {
   try {
