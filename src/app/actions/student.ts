@@ -17,19 +17,19 @@ const PERFECT_CASE_STUDENTS = [
     parentRelation: '妈妈',
     birthDate: new Date('2018-05-12'),
     remarks: '该学员对色彩极其敏感，构图大胆非常有层次感。目前已完成 L1 阶段创意美术测评。',
-    enrollmentDate: new Date('2025-03-01'),
+    enrollmentDate: new Date('2026-03-01'),
     enrollments: [
-      { id: 'e1', course: { name: '创意启蒙画', price: 1600, totalSessions: 48 }, remainingSessions: 32, status: 'ACTIVE', createdAt: new Date('2025-03-01') }
+      { id: 'e1', course: { name: '创意启蒙画', price: 1600, totalSessions: 48 }, remainingSessions: 32, status: 'ACTIVE', createdAt: new Date('2026-03-01') }
     ],
     payments: [
-      { id: 'p1', course: { name: '创意启蒙画' }, amount: 1600, method: '微信', date: new Date('2025-03-01'), remark: '实收已入账' }
+      { id: 'p1', course: { name: '创意启蒙画' }, amount: 1600, method: '微信', date: new Date('2026-03-01'), remark: '实收已入账' }
     ],
     communications: [
       { id: 'c1', teacherFeedback: '孩子今天表现非常出色，罗文老师反馈互动很积极。', parentRequest: '希望能多关注发音细节。', followUpPlan: '待跟进：周五反馈测评结果', date: new Date() }
     ],
     activities: [
-      { id: 'a1', type: 'PAYMENT', title: '缴纳学费', description: '金额 ¥1600', date: new Date('2025-03-01') },
-      { id: 'a2', type: 'ENROLLMENT', title: '课程报名', description: '课程: 创意启蒙画', date: new Date('2025-03-01') }
+      { id: 'a1', type: 'PAYMENT', title: '缴纳学费', description: '金额 ¥1600', date: new Date('2026-03-01') },
+      { id: 'a2', type: 'ENROLLMENT', title: '课程报名', description: '课程: 创意启蒙画', date: new Date('2026-03-01') }
     ],
     surveys: [{ id: 's1', template: { name: '学员入学访谈表' }, childNameCn: '罗诗涵', razLevel: 'Level D', createdAt: new Date() }],
     inventoryTransactions: [{ id: 'i1', itemName: '绘本手工包', type: 'OUT', quantity: 1, date: new Date() }]
@@ -46,17 +46,17 @@ const PERFECT_CASE_STUDENTS = [
     parentRelation: '爸爸',
     birthDate: new Date('2017-08-20'),
     remarks: '近期在硬笔书写力量控制上有明显提升。',
-    enrollmentDate: new Date('2025-03-02'),
+    enrollmentDate: new Date('2026-03-02'),
     enrollments: [
-      { id: 'e2', course: { name: '少儿硬笔艺术', price: 1200, totalSessions: 16 }, remainingSessions: 8, status: 'ACTIVE', createdAt: new Date('2025-03-02') }
+      { id: 'e2', course: { name: '少儿硬笔艺术', price: 1200, totalSessions: 16 }, remainingSessions: 8, status: 'ACTIVE', createdAt: new Date('2026-03-02') }
     ],
     payments: [
-      { id: 'p2', course: { name: '少儿硬笔艺术' }, amount: 1200, method: '支付宝', date: new Date('2025-03-02') }
+      { id: 'p2', course: { name: '少儿硬笔艺术' }, amount: 1200, method: '支付宝', date: new Date('2026-03-02') }
     ],
     communications: [
       { id: 'c2', teacherFeedback: '书写规范度提高，需保持练习频率。', date: new Date() }
     ],
-    activities: [{ id: 'a3', type: 'PAYMENT', title: '缴纳学费', description: '金额 ¥1200', date: new Date('2025-03-02') }],
+    activities: [{ id: 'a3', type: 'PAYMENT', title: '缴纳学费', description: '金额 ¥1200', date: new Date('2026-03-02') }],
     surveys: [],
     inventoryTransactions: []
   }
@@ -77,22 +77,22 @@ for (let i = 2; i < 25; i++) {
     age: 6 + (i % 4),
     status: 'ACTIVE',
     enrollments: [{ 
-      id: `e${i+1}`, course: { name: i % 2 === 0 ? '绘本英语思维' : '创意启蒙画', price: 1600, totalSessions: 48 }, remainingSessions: 24 - (i % 5), status: 'ACTIVE', createdAt: i < 20 ? new Date(`2025-03-${String((i % 28) + 1).padStart(2, '0')}`) : new Date('2026-04-05') 
+      id: `e${i+1}`, course: { name: i % 2 === 0 ? '绘本英语思维' : '创意启蒙画', price: 1600, totalSessions: 48 }, remainingSessions: 24 - (i % 5), status: 'ACTIVE', createdAt: i < 20 ? new Date(`2026-03-${String((i % 28) + 1).padStart(2, '0')}`) : new Date('2026-04-05') 
     }],
     payments: [{ 
-      id: `p${i+1}`, course: { name: i % 2 === 0 ? '绘本英语思维' : '自然科学实验' }, amount: i % 2 === 0 ? 2400 : 1800, method: i % 3 === 0 ? '支付宝' : '微信', date: i < 20 ? new Date(`2025-03-${String((i % 28) + 1).padStart(2, '0')}`) : new Date('2026-04-05'), remark: '新报录入' 
+      id: `p${i+1}`, course: { name: i % 2 === 0 ? '绘本英语思维' : '自然科学实验' }, amount: i % 2 === 0 ? 2400 : 1800, method: i % 3 === 0 ? '支付宝' : '微信', date: i < 20 ? new Date(`2026-03-${String((i % 28) + 1).padStart(2, '0')}`) : new Date('2026-04-05'), remark: '新报录入' 
     }],
     communications: [{ 
       id: `c${i+1}`, teacherFeedback: i % 2 === 0 ? '绘本英语读音标准，互动热情高涨。已完成 Level D 级别词汇测评。' : '本周科学实验表现出色，动手能力很强。', parentRequest: i % 3 === 0 ? '在家里也会听绘本。' : '上周感冒了目前刚恢复。', followUpPlan: i >= 20 ? '待跟进：新学员四月摸底追踪' : '常规反馈：课后回访', date: i < 20 ? new Date(Date.now() - (i % 5) * 86400000) : new Date('2026-04-05') 
     }],
     activities: [{ 
-      id: `a${i+1}`, type: 'PAYMENT', title: '缴纳学费', description: `金额 ¥${i % 2 === 0 ? 2400 : 1800}`, date: i < 20 ? new Date(`2025-03-${String((i % 28) + 1).padStart(2, '0')}`) : new Date('2026-04-05') 
+      id: `a${i+1}`, type: 'PAYMENT', title: '缴纳学费', description: `金额 ¥${i % 2 === 0 ? 2400 : 1800}`, date: i < 20 ? new Date(`2026-03-${String((i % 28) + 1).padStart(2, '0')}`) : new Date('2026-04-05') 
     }],
     surveys: [{ 
-      id: `sur-${i+1}`, template: { name: '家长调查表' }, childNameCn: studentName, razLevel: 'Level ' + String.fromCharCode(65 + (i % 5)), createdAt: i < 20 ? new Date(`2025-03-${String((i % 28) + 1).padStart(2, '0')}`) : new Date('2026-04-05') 
+      id: `sur-${i+1}`, template: { name: '家长调查表' }, childNameCn: studentName, razLevel: 'Level ' + String.fromCharCode(65 + (i % 5)), createdAt: i < 20 ? new Date(`2026-03-${String((i % 28) + 1).padStart(2, '0')}`) : new Date('2026-04-05') 
     }],
     inventoryTransactions: [{ 
-      id: `it${i+1}`, itemName: i % 2 === 0 ? '儿童节定制绘本包' : '创意启蒙画教具套装', type: 'OUT', quantity: 1, date: i < 20 ? new Date(`2025-03-${String((i % 28) + 1).padStart(2, '0')}`) : new Date('2026-04-05') 
+      id: `it${i+1}`, itemName: i % 2 === 0 ? '儿童节定制绘本包' : '创意启蒙画教具套装', type: 'OUT', quantity: 1, date: i < 20 ? new Date(`2026-03-${String((i % 28) + 1).padStart(2, '0')}`) : new Date('2026-04-05') 
     }]
   });
 }

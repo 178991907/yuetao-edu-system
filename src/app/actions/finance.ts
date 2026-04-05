@@ -5,8 +5,8 @@ import { revalidatePath } from "next/cache";
 
 // 财务影子数据：与核心 20 名学员档案 100% 对齐
 const MOCK_PAYMENTS = [
-  { id: 'p1', studentId: 'cmnl-stu-001', studentName: '罗诗涵', courseName: '创意启蒙画', amount: 1600, method: '微信', date: new Date('2025-03-01'), remark: '实收已入账' },
-  { id: 'p2', studentId: 'cmnl-stu-002', studentName: '马宇博', courseName: '少儿硬笔艺术', amount: 1200, method: '支付宝', date: new Date('2025-03-02'), remark: '春季班学费' }
+  { id: 'p1', studentId: 'cmnl-stu-001', studentName: '罗诗涵', courseName: '创意启蒙画', amount: 1600, method: '微信', date: new Date('2026-03-01'), remark: '实收已入账' },
+  { id: 'p2', studentId: 'cmnl-stu-002', studentName: '马宇博', courseName: '少儿硬笔艺术', amount: 1200, method: '支付宝', date: new Date('2026-03-02'), remark: '春季班学费' }
 ];
 
 const firstNames = ['罗', '马', '郭', '何', '林', '高', '朱', '胡', '孙', '徐', '吴', '周', '黄', '赵', '杨', '陈', '刘', '张', '李', '王', '沈', '韩', '杨', '唐', '董'];
@@ -20,7 +20,7 @@ for (let i = 2; i < 25; i++) {
     courseName: i % 2 === 0 ? '绘本英语思维' : '自然科学实验',
     amount: i % 2 === 0 ? 2400 : 1800,
     method: i % 3 === 0 ? '支付宝' : '微信',
-    date: i < 20 ? new Date(`2025-03-${String((i % 28) + 1).padStart(2, '0')}`) : new Date('2026-04-05'),
+    date: i < 20 ? new Date(`2026-03-${String((i % 28) + 1).padStart(2, '0')}`) : new Date('2026-04-05'),
     remark: '新报录入'
   });
 }

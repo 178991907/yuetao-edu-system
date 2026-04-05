@@ -25,7 +25,7 @@ for (let i = 2; i < 25; i++) {
     itemName: i % 2 === 0 ? '儿童节定制绘本包' : '创意启蒙画教具套装',
     quantity: 1,
     type: 'OUT',
-    date: i < 20 ? new Date(`2025-03-${String((i % 28) + 1).padStart(2, '0')}`) : new Date('2026-04-05'),
+    date: i < 20 ? new Date(`2026-03-${String((i % 28) + 1).padStart(2, '0')}`) : new Date('2026-04-05'),
     remark: '学员领用'
   });
 }

@@ -24,6 +24,19 @@ async function main() {
   const t1 = await prisma.surveyTemplate.create({ data: { name: '学员入学访谈表', slug: 'entry-interview', isActive: true } });
 
   const coursePool = [
+  // 提前准备商品库
+  const item1 = await prisma.inventoryItem.create({
+      data: {
+          name: '创意启蒙画教具套装', category: '耗材库', units: '份', quantity: 100, price: 45.0, description: 'L1-L2 创意启蒙课'
+      }
+  });
+  const item2 = await prisma.inventoryItem.create({
+      data: {
+          name: '儿童节定制绘本包', category: '教学库', units: '套', quantity: 50, price: 68.0, description: '分级读物'
+      }
+  });
+
+
     { name: '创意启蒙画', type: '艺术类', price: 1600, sessions: 48 },
     { name: '绘本英语思维', type: '语言类', price: 2400, sessions: 24 },
     { name: '少儿硬笔艺术', type: '艺术类', price: 1200, sessions: 16 }
@@ -56,7 +69,7 @@ async function main() {
         parentRelation: '妈妈',
         status: status,
         remarks: i === 0 ? '该学员对色彩极其敏感，构图大胆非常有层次感。目前已完成 L1 阶段创意美术测评。' : (i === 1 ? '近期在硬笔书写力量控制上有明显提升。' : '该学员由系统影子同步，确保云端档案 100% 详实。'),
-        enrollmentDate: i >= 20 ? new Date('2026-04-05') : (i === 0 ? new Date('2025-03-01') : (i === 1 ? new Date('2025-03-02') : new Date('2025-03-03')))
+        enrollmentDate: i >= 20 ? new Date('2026-04-05') : (i === 0 ? new Date('2026-03-01') : (i === 1 ? new Date('2026-03-02') : new Date('2026-03-03')))
       },
     });
 
@@ -85,7 +98,7 @@ async function main() {
         amount: cp.price, 
         method: '微信', 
         remark: '系统初始化同步',
-        date: i >= 20 ? new Date(2026, 3, 5) : new Date(2025, 2, 1)
+        date: i >= 20 ? new Date(2026, 3, 5) : new Date(2026, 2, 1)
       }
     });
 
@@ -93,15 +106,40 @@ async function main() {
     await prisma.communicationLog.create({
       data: {
         studentId: student.id,
-        date: i >= 20 ? new Date(2026, 3, 5) : new Date(2025, 2, 1),
+        date: i >= 20 ? new Date(2026, 3, 5) : new Date(2026, 2, 1),
         teacherFeedback: '孩子表现很有灵气，沟通通顺。',
         parentRequest: '希望能加强发音。',
         followUpPlan: i >= 20 ? '待跟进：新学员四月摸底追踪' : '待发送反馈卡'
       }
     });
 
+    
+    // 进销存出库
+    await prisma.inventoryTransaction.create({
+      data: {
+        studentId: student.id,
+        itemId: i % 2 === 0 ? item1.id : item2.id,
+        quantity: 1,
+        type: 'OUT',
+        remark: '报名赠送对应教具',
+        date: i >= 20 ? new Date(2026, 3, 5) : new Date(2026, 2, 10)
+      }
+    });
+
     console.log(`✅ [${i + 1}/25] 同步进度: ${name} (${studentId}) 闭环建立完毕。`);
   }
+
+  
+  // 添加财务支出闭环
+  await prisma.transaction.create({
+    data: { type: 'EXPENSE', amount: 5000, category: 'RENT', method: '微信', description: '4月份房租缴纳', date: new Date(2026, 3, 2) }
+  });
+  await prisma.transaction.create({
+    data: { type: 'EXPENSE', amount: 1200, category: 'MATERIALS', method: '支付宝', description: '采购春季教具耗材', date: new Date(2026, 3, 5) }
+  });
+  await prisma.transaction.create({
+    data: { type: 'EXPENSE', amount: 3000, category: 'MARKETING', method: '微信', description: '3月份地推宣传', date: new Date(2026, 2, 10) }
+  });
 
   console.log('\n🚀 全系统镜像同步已 100% 完成！');
 }
