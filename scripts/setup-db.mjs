@@ -3,11 +3,21 @@ import path from 'path';
 
 const schemaPath = path.resolve(process.cwd(), 'prisma/schema.prisma');
 const dbUrl = process.env.DATABASE_URL || '';
+const isVercel = process.env.VERCEL === '1';
+
+console.log('🔍 [环境检查] Vercel:', isVercel ? '是' : '否');
 
 // 识别数据库类型逻辑
-let provider = 'sqlite'; // 默认优先级：本地模式
-if (dbUrl.startsWith('postgres://') || dbUrl.startsWith('postgresql://')) {
-  provider = 'postgresql'; // 自动切换：云端模式
+let provider = 'sqlite'; 
+if (dbUrl.includes('postgres') || dbUrl.includes('postgresql')) {
+  provider = 'postgresql'; 
+}
+
+// 在 Vercel 环境下的强制逻辑
+if (isVercel && provider === 'sqlite') {
+  console.error('❌ [部署失败] 在 Vercel 环境下必须配置远程数据库 (PostgreSQL)!');
+  console.error('👉 请在 Vercel 项目面板的 Environment Variables 中添加 DATABASE_URL。');
+  process.exit(1);
 }
 
 try {
@@ -21,10 +31,11 @@ try {
   
   if (schemaContent !== updatedContent) {
     fs.writeFileSync(schemaPath, updatedContent);
-    console.log(`✅ [数据库切换] 已自动检测并切换到: ${provider.toUpperCase()} 模式`);
+    console.log(`✅ [数据库切换] 已成功切换到: ${provider.toUpperCase()} 模式`);
   } else {
-    console.log(`ℹ️ [数据库保持] 当前配置已符合: ${provider.toUpperCase()} 模式`);
+    console.log(`ℹ️ [状态保持] 当前 Provider 已是: ${provider.toUpperCase()}`);
   }
 } catch (error) {
   console.error('❌ [数据库切换] 脚本执行异常:', error);
+  process.exit(1);
 }
