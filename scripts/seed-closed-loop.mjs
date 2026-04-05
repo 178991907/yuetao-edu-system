@@ -65,11 +65,15 @@ async function main() {
 
     // 为每个学生根据状态生成完整的课程/财务/沟通链条
     for (const cp of coursePool.slice(0, 2)) {
-      const course = await prisma.course.upsert({
-        where: { name: cp.name },
-        update: {},
-        create: { name: cp.name, type: cp.type, price: cp.price, totalSessions: cp.sessions, description: '全能系统演示课程' }
+      let course = await prisma.course.findFirst({
+        where: { name: cp.name }
       });
+      
+      if (!course) {
+        course = await prisma.course.create({
+          data: { name: cp.name, type: cp.type, price: cp.price, totalSessions: cp.sessions, description: '全能系统演示课程' }
+        });
+      }
 
       const enrollment = await prisma.enrollment.create({
         data: {
