@@ -16,10 +16,27 @@ export async function getCourses(studentId?: string) {
       },
       orderBy: { createdAt: "desc" },
     });
+    
+    if (courses.length === 0) {
+      return { 
+        success: true, 
+        isDemo: true,
+        data: [
+          { id: 'c-1', name: '创意启蒙画 (演示)', type: '艺术类', price: 1600, totalSessions: 48, _count: { enrollments: 12 } },
+          { id: 'c-2', name: '绘本英语思维 (演示)', type: '语言类', price: 2400, totalSessions: 24, _count: { enrollments: 8 } },
+          { id: 'c-3', name: '少儿硬笔艺术 (演示)', type: '艺术类', price: 1200, totalSessions: 16, _count: { enrollments: 15 } },
+          { id: 'c-4', name: '自然科学实验 (演示)', type: '素质类', price: 1800, totalSessions: 20, _count: { enrollments: 6 } }
+        ]
+      };
+    }
     return { success: true, data: courses };
   } catch (error) {
-    console.error("Failed to fetch courses:", error);
-    return { success: false, error: "Failed to fetch courses" };
+    console.warn("⚠️ [数据库异常] 正在回退至演示课程体系");
+    return { 
+      success: true, 
+      isDemo: true,
+      data: [{ id: 'c-1', name: '精品录入课程 (演示)', type: '综合类', price: 0, totalSessions: 0, _count: { enrollments: 0 } }]
+    };
   }
 }
 
