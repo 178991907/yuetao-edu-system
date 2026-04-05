@@ -66,7 +66,7 @@ export function Sidebar() {
         <div className="rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 p-4 text-white shadow-lg overflow-hidden relative">
           <div className="absolute top-0 right-0 w-16 h-16 bg-white/10 rounded-full -mr-8 -mt-8" />
           <h4 className="font-semibold text-xs tracking-wider uppercase opacity-80">系统状态</h4>
-          <p className="mt-1 text-xs font-black truncate">v1.0.0 Pro</p>
+          <p className="mt-1 text-xs font-black truncate">v2.3.3 Pro</p>
           <div className="mt-4 h-1 w-full rounded-full bg-white/20">
             <div className="h-full w-2/3 rounded-full bg-white shadow-sm shadow-white/50"></div>
           </div>

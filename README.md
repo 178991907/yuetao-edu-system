@@ -1,4 +1,4 @@
-# 阅陶教育培训管理系统 (Yuetao Edu Management System) v2.0 🚀
+# 阅陶教育培训管理系统 (Yuetao Edu Management System) v2.3.3 🚀
 
 [![Next.js](https://img.shields.io/badge/Next.js-15%2B-black?logo=next.js)](https://nextjs.org/)
 [![Prisma](https://img.shields.io/badge/Prisma-6%2B-2D3748?logo=prisma)](https://www.prisma.io/)

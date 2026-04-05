@@ -37,7 +37,7 @@ export default function LandingPage() {
             <div className="flex flex-col items-center space-y-8 text-center relative z-10">
               <div className="space-y-4">
                 <div className="inline-block px-4 py-1.5 bg-blue-100 text-blue-700 rounded-full text-sm font-bold tracking-wide animate-bounce">
-                  NEW: 2.0 数字化升级版本已上线
+                  NEW: v2.3.3 稳定性增强版本已上线
                 </div>
                 <h1 className="text-4xl font-extrabold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl/none bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-600">
                   为教育者而生，<br />打造极致高效的教学管理
@@ -171,7 +171,7 @@ export default function LandingPage() {
                 <div className="absolute -top-4 -right-4 bg-white p-4 rounded-2xl shadow-xl z-10 animate-bounce">
                    <div className="flex items-center gap-2">
                      <CheckCircle2 className="text-emerald-500 w-5 h-5" />
-                     <span className="font-bold text-sm">极简部署方案已就绪</span>
+                     <span className="font-bold text-sm">v2.3.3 核心闭环已就绪</span>
                    </div>
                 </div>
                 <div className="bg-slate-900 rounded-[22px] overflow-hidden shadow-2xl h-[400px] flex items-center justify-center p-8 group">
